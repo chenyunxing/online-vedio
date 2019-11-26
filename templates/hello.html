@@ -1,0 +1,17 @@
+<!doctype html>
+<title>Hello from Flask</title>
+{% if name %}
+  <h1>Hello {{ name }}!</h1>
+{% else %}
+  <h1>Hello, World!</h1>
+{% endif %}
+<script type="text/javascript">
+    </script>
+<video id="video1" width="420" style="margin-top:15px;" controls autoplay autobuffer>
+  <source src="{{ url_for('static',filename=dirname + '/'+ name + '' )}}" type="video/mp4">
+  <source src="{{ url_for('static',filename=dirname + '/'+ name + '' )}}" type="video/ogg">
+  <source src="{{ url_for('static',filename=dirname + '/'+ name + '' )}}" type="video/webm">
+  <object data="{{ url_for('static',filename=dirname + '/'+ name + '' )}}" width="320" height="240">
+    <embed src="{{ url_for('static',filename=dirname + '/'+ name + '' )}}" width="320" height="240">
+  </object>
+</video>
