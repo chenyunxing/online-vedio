@@ -41,6 +41,21 @@ def checkport():
                 return -1
     return ip,port
 
+# 建立软连接
+def setLink(pathList):
+    # 首先清空static文件夹
+    path = './static'
+    os.removedirs(path)
+    # 重新建立static文件夹
+    os.mkdir(path)
+    video_num = 0
+    # 建立软连接
+    for path in pathList:
+        dst = './static/video' + str(video_num)
+        video_num = video_num + 1
+        os.symlink(path, dst)
+    # 把video的数量记录下来，晚点用于前端展示
+    
 if __name__ == '__main__':
     # 检查端口占用
     ip,port = checkport()
