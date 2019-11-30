@@ -4,8 +4,8 @@ import os
 import socket
 app = Flask(__name__)
 
-# dir = 'C:\\Users\\yinxixing'
-dir = 'C:\\game'
+dir = 'C:\\Users\\yinxixing'
+# dir = 'C:\\game'
 @app.route('/')
 def hello_world():
     infos = os.listdir(dir)
@@ -18,7 +18,7 @@ def hello_world():
 
 @app.route('/test/<name>')
 def test(name=None,dirname='videos'):
-    dirname = 'game'
+    # dirname = 'game'
     return render_template('hello.html', name=name,dirname=dirname)
 
 # 检查端口找到可用端口开启服务
@@ -55,7 +55,7 @@ def setLink(pathList):
         video_num = video_num + 1
         os.symlink(path, dst)
     # 把video的数量记录下来，晚点用于前端展示
-    
+
 if __name__ == '__main__':
     # 检查端口占用
     ip,port = checkport()
