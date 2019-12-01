@@ -42,21 +42,48 @@ def checkport():
     return ip,port
 
 # 建立软连接
-def setLink(pathList):
+def setLink(nameList,pathList):
+    return_dir_list = [] # 返回的目录列表
     # 首先清空static文件夹
     path = './static'
     os.removedirs(path)
     # 重新建立static文件夹
     os.mkdir(path)
-    video_num = 0
+    # 获取绝对路径
+    abspath = os.path.abspath(path)
     # 建立软连接
-    for path in pathList:
-        dst = './static/video' + str(video_num)
-        video_num = video_num + 1
-        os.symlink(path, dst)
-    # 把video的数量记录下来，晚点用于前端展示
+    for dst,path in zip(nameList,pathList):
+        temp = os.path.join(abspath,dst)
+        path = os.path.abspath(path) # 顺手获取绝对路径，用绝对路径建立软连接，虽然感觉没有应该也没关系
+        os.symlink(path, temp)
+        return_dir_list.append(temp)
+    return return_dir_list
+
+# 定义主函数，传入参数为文件夹路径列表
+def main(dir_path_list):
+    pre = 'video' # 软连接前缀
+    soft_dir_list = [] # 文件夹连接名字的列表
+    flag = 0 # 计数器，避免同名情况
+    # 第一步判断是否每个路径都是文件夹，如果有一个不是，则返回错误
+    for dir_path in dir_path_list:
+        if(os.path.isdir(dir_path)):
+            temp = os.path.abspath(dir_path)
+            (_, temp) = os.path.split(temp)
+            soft_dir_list.append(pre + '-' + str(flag)+ '-' + temp)
+            flag = flag + 1
+        else:
+            return False
+    # 到此处目录都存在，开始建立软连接
+    video_list = setLink(soft_dir_list, dir_path_list)
+    # 获取视频列表成功，随后开始编写模板
+    
+
+
+
+
 
 if __name__ == '__main__':
     # 检查端口占用
-    ip,port = checkport()
-    app.run(host='0.0.0.0',port=port,debug=True)
+    # ip,port = checkport()
+    # app.run(host='0.0.0.0',port=port,debug=True)
+    main(['C:\\game','C:\\work\\redio\\downloadvideo-'])
