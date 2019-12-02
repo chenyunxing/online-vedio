@@ -76,14 +76,20 @@ def main(dir_path_list):
     # 到此处目录都存在，开始建立软连接
     video_list = setLink(soft_dir_list, dir_path_list)
     # 获取视频列表成功，随后开始编写模板
-    
 
+def start():
+    print('----------------------------')
+    ip,port = checkport()
+    app.run(host='0.0.0.0',port=port,debug=True)
+    return 'succe'
 
 
 
 
 if __name__ == '__main__':
+    start()
     # 检查端口占用
     # ip,port = checkport()
     # app.run(host='0.0.0.0',port=port,debug=True)
-    main(['C:\\game','C:\\work\\redio\\downloadvideo-'])
+    # main(['C:\\game','C:\\work\\redio\\downloadvideo-'])
+    pass
