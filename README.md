@@ -7,4 +7,4 @@ $$$
 总体制作思路为：  
 flask辅助建立站点  
 目录用软连接到static目录下  
-用桌面应用打包路径(目前使用pyinstall,考虑使用PySimpleGUI)和一键开启  
+用桌面应用打包路径(目前使用pyinstaller打包，GUI使用PySide2,考虑使用PySimpleGUI)和一键开启  
