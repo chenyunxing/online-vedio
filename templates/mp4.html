@@ -1,0 +1,7 @@
+{% for fold,files in zipdata %}
+  <li> {{ fold }} </li>
+  {% for file in files %}
+    <a href="test/{{fold}}/{{file}}">{{ file }}</a>
+    <br>
+  {% endfor %}
+{% endfor %}

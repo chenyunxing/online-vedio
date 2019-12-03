@@ -7,24 +7,6 @@ import _thread
 
 import ctypes
 
-def _async_raise(tid, exctype):
-    """raises the exception, performs cleanup if needed"""
-    tid = ctypes.c_long(tid)
-    if not inspect.isclass(exctype):
-        exctype = type(exctype)
-    res = ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, ctypes.py_object(exctype))
-    if res == 0:
-        raise ValueError("invalid thread id")
-    elif res != 1:
-        # """if it returns a number greater than one, you're in trouble,
-        # and you should call it again with exc=NULL to revert the effect"""
-        ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, None)
-        raise SystemError("PyThreadState_SetAsyncExc failed")
-
-def stop_thread(thread):
-    _async_raise(thread.ident, SystemExit)
-
-
 sg.change_look_and_feel('DarkAmber')    # 背景风格设置
 # 主题窗口架构
 layout = [  [sg.Text('请选择你要部署的文件夹')],
@@ -50,12 +32,14 @@ while True:
             dir_list.append(values['fold_temp'])
             window['fold_text'].update(dir_list)
     if event in (None, 'Cancel'):   # if user closes window or clicks cancel
-        if node:
-            stop_thread(node)
+        # if node:
+        #     stop_thread(node)
         break
     if event == 'start':
         if not node:
-            node = _thread.start_new_thread(start.start())
+            node = threading.Thread(target=start.start,args=(dir_list))
+            node.setDaemon(True)
+            node.start()
             print('start')
     # print('You entered ', values[0])
 # sg.Listbox(values=('1990年','1991年','1992年'), size=(30, 5))],

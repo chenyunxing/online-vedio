@@ -4,20 +4,29 @@ import os
 import socket
 app = Flask(__name__)
 
-dir = 'C:\\Users\\yinxixing'
+# dir = 'C:\\Users\\yinxixing'
+dir = './static/'
 # dir = 'C:\\game'
 @app.route('/')
 def hello_world():
     infos = os.listdir(dir)
-    list_mp4 = []
+    # 遍历static目录下的文件夹
+    data = []
+    name = []
     for info in infos:
-        if '.mp4' in info:
-            temp = '<a href="test/' + info +'">' + info + '</a>'
-            list_mp4.append(temp)
-    return '<br>'.join(list_mp4)
+        fold_path = os.path.join(dir,info)
+        # 如果是一个目录，则在前端遍历输出目录下的.mp4文件
+        if info != '.' and info != '..' and os.path.isdir(fold_path):
+            name.append(info)
+            temp = []
+            for i in os.listdir(fold_path):
+                if '.mp4' in i:
+                    temp.append(i)
+            data.append(temp)
+    return render_template('mp4.html', zipdata=zip(name,data))
 
-@app.route('/test/<name>')
-def test(name=None,dirname='videos'):
+@app.route('/test/<dirname>/<name>')
+def test(dirname=None,name=None):
     # dirname = 'game'
     return render_template('hello.html', name=name,dirname=dirname)
 
@@ -77,19 +86,20 @@ def main(dir_path_list):
     video_list = setLink(soft_dir_list, dir_path_list)
     # 获取视频列表成功，随后开始编写模板
 
-def start():
+def start(dir_path_list):
     print('----------------------------')
+    main(dir_path_list)
     ip,port = checkport()
-    app.run(host='0.0.0.0',port=port,debug=True)
+    app.run(host='0.0.0.0',port=port,debug=False)
     return 'succe'
 
 
 
 
 if __name__ == '__main__':
-    start()
+    # start()
     # 检查端口占用
-    # ip,port = checkport()
-    # app.run(host='0.0.0.0',port=port,debug=True)
+    ip,port = checkport()
+    app.run(host='0.0.0.0',port=port,debug=True)
     # main(['C:\\game','C:\\work\\redio\\downloadvideo-'])
     pass
